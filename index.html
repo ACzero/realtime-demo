@@ -1,0 +1,24 @@
+<html>
+  <head>
+  </head>
+  <body>
+    <h1 id='clientid'></h1>
+    <h1 id='message'></h1>
+  </body>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    var client_id = String(Math.round(Math.random()*1000));
+    document.getElementById('clientid').innerHTML = 'client id: ' + client_id;
+
+    var socket = io('http://localhost:3001');
+    socket.on('connect_success', function (data) {
+      console.log(data);
+      socket.emit('register', { id: client_id });
+    });
+
+    socket.on('message', function (message) {
+      console.log(message);
+    })
+  </script>
+</html>
