@@ -2,13 +2,12 @@ var app = require('http').createServer(handler);
 var qs = require('querystring');
 var io = require('socket.io')(app);
 var fs = require('fs');
-var all_cilent = [];
 
 console.log('listening at 3001');
 app.listen(3001);
 
 function handler (req, res) {
-  if(req.method == 'POST' && req.url == '/send'){
+  if(req.method == 'POST' && req.url == '/notify'){
     body = '';
     req.on('data', function(chunk) {
       body += chunk;
@@ -38,8 +37,5 @@ io.on('connection', function (socket) {
   socket.on('register', function (data) {
     console.log('client id: ' + data.id);
     socket.join(data.id);
-    all_cilent.push(data.id);
-    io.to(data.id).emit('message', 'hi client : ' + data.id);
-    io.to(data.id).emit('message', 'exist clients : ' + all_cilent.join(','));
   });
 });
